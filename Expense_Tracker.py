@@ -5,7 +5,6 @@ def Expense(Amount=None,Category=None,Date=None,Description=None):
         "Category" : Category,
         "Date" : Date,
         "Description" : Description
-        
     }
 
     return expense
@@ -26,17 +25,58 @@ def view_all():
         for key,value in i.items():
             print(f"{key} : {value}")
             
-            
+def savefile():
+    with open("Expense.txt","a") as f:
+        
+        f.write("Expenses:\n")
+        f.write("-" * 20 + "\n")
+        for expense in data:
+            f.write("{\n")
+            for key,value in expense.items():
+                f.write(f"   {key} : {value}\n")    
+            f.write("}\n\n")  
 
-amount = int(input("Enter The Amount : "))
-category = (input("Enter The Category : "))
-date = (input("Enter The Date : "))
-description = (input("Enter The Description : "))
+        summary = {}
+        for i in data:
+            Category = i["Category"]
+            amount = i["Amount"]
+        
+            summary[Category] = summary.get(Category,0) + amount
+        
+        f.write("\nCategory Wise Expenses\n")
+        f.write("-" * 25 + "\n")
+    
+        for category,total in summary.items():
+            f.write(f"{category} : ₹{total}\n")
+        
+        
+        
+while True:
 
-expense = Expense(Amount=amount,Category=category,Date=date,Description=description)
-# Viewer(expense)
-mulit_info(expense)
+    print("\n===== Expense Tracker =====")
+    print("1. Add Expense")
+    print("2. View All Expenses")
+    print("3. Category Summary")
+    print("4. Save Expenses")
+    print("5. Exit")
 
-view_all()
+    choice = input("Enter Choice: ")
+
+    match choice:
+
+        case "1":
+            view_all()
+
+
+        case "2":
+            savefile()
+
+        case "3":
+            print("Thank You For Using Expense Tracker")
+            break
+
+        case _:
+            print("Invalid Choice")
+
 
 
